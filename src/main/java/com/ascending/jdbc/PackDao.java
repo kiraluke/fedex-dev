@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PackDao {
-    static final String DB_URL = "jdbc:postgresql://localhost:5429/fedex_dev";
+    static final String DB_URL = "jdbc:postgresql://localhost:5429/fedex1_dev";
     static final String USER = "admin";
     static final String PASS = "password";
 
