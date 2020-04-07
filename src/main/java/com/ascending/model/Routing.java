@@ -1,6 +1,7 @@
 package com.ascending.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,20 +19,18 @@ public class Routing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "id")
-    private long id;
+    private Long id;
     @Column (name = "pirority")
     private String pirority;
     @Column (name = "area")
     private String area;
-    @OneToMany(mappedBy = "pack")
-    @JoinColumn
-    private Set<Pack> pack;
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    @OneToMany(mappedBy = "routing",cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
+//    @JoinColumn
+//    private Pack pack;
+    private List<Pack> packs;
 
-    public long getId() { return id; }
+    public Long getId() { return id; }
 
     public void setPirority(String pirority) {
         this.pirority = pirority;
@@ -48,10 +47,28 @@ public class Routing {
     }
 
 
-    public void setPack(Set<Pack> pack) {
-        this.pack = pack;
+//    public void setPack(Set<Pack> pack) {
+//        this.pack = pack;
+//    }
+//    public Set<Pack> getPack() {
+//        return pack;
+//    }
+
+
+//    public Pack getPack() {
+//        return pack;
+//    }
+//
+//    public void setPack(Pack pack) {
+//        this.pack = pack;
+//    }
+
+    public List<Pack> getPacks() {
+        return packs;
     }
-    public Set<Pack> getPack() {
-        return pack;
+
+    public void setPacks(List<Pack> packs) {
+        this.packs = packs;
     }
+
 }

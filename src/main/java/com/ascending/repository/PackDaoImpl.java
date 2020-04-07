@@ -1,7 +1,7 @@
 package com.ascending.repository;
 
 import com.ascending.model.Pack;
-import com.ascending.model.Recipient;
+import com.ascending.model.User;
 import com.ascending.util.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -63,30 +63,30 @@ public class PackDaoImpl implements PackDao {
         return null;
     }
 
-    @Override
-    public boolean deleteBy(String destination) {
-        String hql = "DELETE Pack where name = :pack1";
-        int deletedCount = 0;
-        Transaction transaction = null;
-
-        try(Session session = HibernateUtil.getSessionFactory().openSession()){
-            transaction = session.beginTransaction();
-            Query<Pack> query = session.createQuery(hql);
-            query.setParameter("pack1",destination);
-            deletedCount = query.executeUpdate();
-//            Pack pack = getPackByDestination(destination);
-//            sesssion.delete(pack);
-//            transaction.commit();
-//            deletedCount = 1;
-            return true;
-        }
-        catch(Exception e){
-            if(transaction != null) transaction.rollback();
-            logger.error(e.getMessage());
-        }
-        logger.debug(String.format("The package %s was deleted",destination));
-        return deletedCount>=1 ? true : false;
-    }
+//    @Override
+//    public boolean deleteBy(String destination) {
+//        String hql = "DELETE Pack where name = :pack1";
+//        int deletedCount = 0;
+//        Transaction transaction = null;
+//
+//        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+//            transaction = session.beginTransaction();
+//            Query<Pack> query = session.createQuery(hql);
+//            query.setParameter("pack1",destination);
+//            deletedCount = query.executeUpdate();
+////            Pack pack = getPackByDestination(destination);
+////            sesssion.delete(pack);
+////            transaction.commit();
+////            deletedCount = 1;
+//            return true;
+//        }
+//        catch(Exception e){
+//            if(transaction != null) transaction.rollback();
+//            logger.error(e.getMessage());
+//        }
+//        logger.debug(String.format("The package %s was deleted",destination));
+//        return deletedCount>=1 ? true : false;
+//    }
 
     @Override
     public boolean delete(Pack pack) {
@@ -96,7 +96,7 @@ public class PackDaoImpl implements PackDao {
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query<Recipient> query = session.createQuery(hql);
+            Query<User> query = session.createQuery(hql);
             deletedCount = query.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -105,6 +105,18 @@ public class PackDaoImpl implements PackDao {
         }
         logger.debug(String.format("The packages %s was deleted"));
         return deletedCount >=1 ? true : false;
+    }
+
+    @Override
+    public Pack getPackByTracking(String trackingId) {
+        if(trackingId == null)return null;
+        String hql = "FROM Pack as pak where trackingId = :tracking";
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query query = session.createQuery(hql);
+            query.setParameter("tracking", trackingId.toLowerCase());
+
+            return (Pack) query.uniqueResult();
+        }
     }
 
 }

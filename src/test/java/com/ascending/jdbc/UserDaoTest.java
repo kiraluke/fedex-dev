@@ -1,16 +1,16 @@
 //package com.ascending.jdbc;
 //
-//import com.ascending.model.Recipient;
+//import com.ascending.model.User;
 //import org.junit.*;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 //
 //import java.util.List;
 //
-//public class RecipientDaoTest {
+//public class UserDaoTest {
 //    private Logger logger = LoggerFactory.getLogger(getClass());
-//    private RecipientDao recipientDao;
-//    private Recipient testRecord;
+//    private UserDao userDao;
+//    private User testRecord;
 //
 //    @BeforeClass
 //    public static void setUpClass(){
@@ -21,20 +21,20 @@
 //    public void setUp(){
 ////        logger.debug("executing before");
 //        System.out.println("executing before");
-//        testRecord = new Recipient();
-//        recipientDao = new RecipientDao();
-//        testRecord = RecipientDao.save(testRecord);
+//        testRecord = new User();
+//        userDao = new UserDao();
+//        testRecord = UserDao.save(testRecord);
 //    }
 //    @After
 //    public void tearDown(){
 ////        logger.info("executing after");
 //        System.out.println("executing after");
-//        RecipientDao.delete(testRecord.getId());
+//        UserDao.delete(testRecord.getId());
 //    }
 //    @Test
-//    public void getRecipient(){
-//        List<Recipient> recipients = RecipientDao.getRecipients();
+//    public void getUser(){
+//        List<User> users = UserDao.getUsers();
 //        int expectedNumOfRecip = 5;
-//        Assert.assertEquals(expectedNumOfRecip,recipients.size());
+//        Assert.assertEquals(expectedNumOfRecip,users.size());
 //    }
 //}

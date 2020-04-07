@@ -8,7 +8,7 @@ public class Pack {
 
     public Pack(){
     }
-    public Pack(long id,String trackingId,String category,String destination){
+    public Pack(Long id,String trackingId,String category,String destination){
         this.id = id;
         this.trackingId = trackingId;
         this.category = category;
@@ -19,26 +19,31 @@ public class Pack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
     @Column(name = "tracking_id")
     private String trackingId;
     @Column(name = "category")
     private String category;
     @Column(name = "destination")
     private String destination;
-//    @Column(name = "recipient_id")
-//    private long recipientId;
+
+//    @Column(name = "user_id")
+//    private long userId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recipient_id")
-    private Recipient recipient;
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "routing_id")
     private Routing routing;
 
+    public Long getId() {
+        return id;
+    }
     public String getTrackingId(){
         return trackingId;
     }
-    public void setTrackingid(String trackingid){
+    public void setTrackingId(String trackingId){
         this.trackingId = trackingId;
     }
     public String getCategory(){
@@ -53,14 +58,14 @@ public class Pack {
     public void setDestination(String destination) {
         this.destination = destination;
     }
-    public void setRecipient(Recipient recipient){
-        this.recipient = recipient;
+    public void setUser(User user){
+        this.user = user;
     }
-    public Recipient getRecipient() {
-        return recipient;
+    public User getUser() {
+        return user;
     }
-//    public void setRecipientId(long recipientId){
-//        this.recipientId = recipientId;
+//    public void setUserId(long userId){
+//        this.userId = userId;
 //    }
     public void setRouting(Routing routing) {
         this.routing = routing;

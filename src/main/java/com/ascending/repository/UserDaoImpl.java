@@ -1,6 +1,7 @@
 package com.ascending.repository;
 
-import com.ascending.model.Recipient;
+import com.ascending.model.Pack;
+import com.ascending.model.User;
 import com.ascending.util.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -14,27 +15,27 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class RecipientDaoImpl implements RecipientDao {
+public class UserDaoImpl implements UserDao {
     private SessionFactory sessionFactory;
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public List<Recipient> getRecipients() {
-        String hql = "FROM Recipient";
+    public List<User> getUsers() {
+        String hql = "FROM User";
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
-            Query<Recipient> query = session.createQuery(hql);
+            Query<User> query = session.createQuery(hql);
             return query.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
         }
     }
 
-    public Recipient save(Recipient recipient) {
+    public User save(User user) {
         Transaction transaction = null;
 
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             transaction = session.beginTransaction();
-            session.save(recipient);
+            session.save(user);
             transaction.commit();
-            return recipient;
+            return user;
         }
         catch(Exception e){
             if(transaction != null) transaction.rollback();
@@ -44,14 +45,14 @@ public class RecipientDaoImpl implements RecipientDao {
     }
 
     @Override
-    public boolean delete(Recipient recipient) {
-        String hql = "DELETE Recipient";
+    public boolean delete(User user) {
+        String hql = "DELETE User";
         int deletedCount = 0;
         Transaction transaction = null;
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query<Recipient> query = session.createQuery(hql);
+            Query<User> query = session.createQuery(hql);
             deletedCount = query.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -62,14 +63,14 @@ public class RecipientDaoImpl implements RecipientDao {
         return deletedCount >=1 ? true : false;
     }
 
-    public Recipient update(Recipient recipient){
+    public User update(User user){
         Transaction transaction = null;
 
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             transaction = session.beginTransaction();
-            session.saveOrUpdate(recipient);
+            session.saveOrUpdate(user);
             transaction.commit();
-            return recipient;
+            return user;
         }
         catch(Exception e){
             if(transaction != null) transaction.rollback();
@@ -79,47 +80,71 @@ public class RecipientDaoImpl implements RecipientDao {
     }
 
     @Override
-    public List<Recipient> getRecipientsAndPacksBy(String recipientName) {
-        if(recipientName == null)return null;
-        String hql = "FROM Recipient as recp left join fetch recp.pack where lower(recp.name) = :recipientName1";
+    public List<Pack> getUserInfoAndPacksBy(String userName) {
+        if(userName == null) return null;
+        String hql = "FROM User as recp left join fetch recp.packs where lower(recp.name) = :userName1";
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             Query query = session.createQuery(hql);
-            query.setParameter("recipientName1",recipientName.toLowerCase());
+            query.setParameter("userName1",userName.toLowerCase());
 
-            List<Recipient> resultList = query.list();
+            List<Pack> resultList = query.list();
             return resultList;
         }
     }
 
     @Override
-    public Recipient getRecipientByName(String recipientName) {
-        if(recipientName == null) return null;
-        String hql = "FROM Recipient as recp left join fetch recp.pack where lower(recp.name) = :recipientName2";
+    public User getUserByName(String userName) {
+        if(userName == null) return null;
+        String hql = "FROM User as recp left join fetch recp.packs where lower(recp.name) = :userName2";
         try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query query = session.createQuery(hql);
-            query.setParameter("recipientName2", recipientName.toLowerCase());
+            query.setParameter("userName2", userName.toLowerCase());
 
-            return (Recipient) query.uniqueResult();
+            return (User) query.uniqueResult();
         }
     }
 
-    public boolean deleteBy(String recipientName) {
-        String hql = "DELETE Recipient as recp where name = :recipientName3";
+    @Override
+    public User getUserById(Long Id) {
+        String hql = "FROM User as recp where Id = :id1";
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query query = session.createQuery(hql);
+            query.setParameter("id1", Id);
+
+            return (User) query.uniqueResult();
+        }
+    }
+    @Override
+    public boolean deleteBy(String userName) {
+        String hql = "DELETE User as recp where name = :userName3";
         int deletedCount = 0;
         Transaction transaction = null;
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query<Recipient> query = session.createQuery(hql);
-            query.setParameter("recipientName3", recipientName);
+            Query<User> query = session.createQuery(hql);
+            query.setParameter("userName3", userName);
             deletedCount = query.executeUpdate();
             return true;
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
             logger.error(e.getMessage());
         }
-        logger.debug(String.format("The route %s was deleted",recipientName));
+        logger.debug(String.format("The route %s was deleted",userName));
         return deletedCount >=1 ? true : false;
+    }
+    @Override
+    public User getUserByCredentials(String email, String password) {
+        String hql = "FROM User as u where lower(u.email) = :email and u.password = :password";
+        logger.debug(String.format("User email: %s, password: %s", email, password));
+
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery(hql);
+            query.setParameter("email", email.toLowerCase().trim());
+            query.setParameter("password", password);
+
+            return query.uniqueResult();
+        }
     }
 
 }

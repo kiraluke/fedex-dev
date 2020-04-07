@@ -1,6 +1,7 @@
 package com.ascending.repository;
 
-import com.ascending.model.Recipient;
+import com.ascending.model.Pack;
+import com.ascending.model.User;
 import com.ascending.model.Routing;
 import com.ascending.util.HibernateUtil;
 import org.hibernate.Criteria;
@@ -68,7 +69,7 @@ public class RoutingDaoImpl implements RoutingDao {
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query<Recipient> query = session.createQuery(hql);
+            Query<User> query = session.createQuery(hql);
             deletedCount = query.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -82,7 +83,7 @@ public class RoutingDaoImpl implements RoutingDao {
     @Override
     public Routing getRoutingByPirority(String pirority) {
         if (pirority == null) return null;
-        String hql = "FROM Routing as rout left join fetch rout.pack where lower(rout.name) = :routName2";
+        String hql = "FROM Routing as rout left join fetch rout.packs where lower(rout.pirority) = :routName2";
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query query = session.createQuery(hql);
             query.setParameter("routName2", pirority.toLowerCase());
@@ -91,14 +92,14 @@ public class RoutingDaoImpl implements RoutingDao {
     }
 
     @Override
-    public List<Routing> getRoutingAndPack(String pirority) {
+    public List<Pack> getRoutingAndPack(String pirority) {
         if(pirority == null) return null;
-        String hql = "FROM Routing as rout left join fetch rout.pack where lower(rout.name) = :routName3";
+        String hql = "FROM Routing as rout left join fetch rout.packs where lower(rout.pirority) = :routName3";
         try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query query = session.createQuery(hql);
-            query.setParameter("routName3",pirority);
+            query.setParameter("routName3",pirority.toLowerCase());
 
-            List<Routing> resultList = query.list();
+            List<Pack> resultList = query.list();
             return resultList;
         }
     }

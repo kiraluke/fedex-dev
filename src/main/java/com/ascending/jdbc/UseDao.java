@@ -1,25 +1,25 @@
 //package com.ascending.jdbc;
 //
-//import com.ascending.model.Recipient;
+//import com.ascending.model.User;
 //
 //import java.sql.*;
 //import java.util.ArrayList;
 //import java.util.List;
 //
-//public class RecipientDao {
+//public class UserDao {
 //    static final String DB_URL = "jdbc:postgresql://localhost:5429/fedex1_dev";
 //    static final String USER = "admin";
 //    static final String PASS = "password";
 //
-//    public static Recipient save(Recipient p){
-//        return new Recipient();
+//    public static User save(User p){
+//        return new User();
 //    }
 //    public static boolean delete(long id){
 //        return false;
 //    }
 //
-//    public static List<Recipient> getRecipients(){
-//        List<Recipient> recipients = new ArrayList();
+//    public static List<User> getUsers(){
+//        List<User> users = new ArrayList();
 //        Connection conn = null;
 //        Statement stmt = null;
 //        ResultSet rs = null;
@@ -31,7 +31,7 @@
 //            System.out.println("Creating statement...");
 //            stmt = conn.createStatement();
 //            String sql;
-//            sql = "SELECT * FROM recipient";
+//            sql = "SELECT * FROM user";
 //            rs = stmt.executeQuery(sql);
 //            //STEP 4: Extract data from result set
 //            while(rs.next()) {
@@ -44,15 +44,15 @@
 //                String adress = rs.getString("adress");
 //                long trackingid  = rs.getInt("trackingid");
 //                //Fill the object
-//                Recipient recipient = new Recipient();
-//                recipient.setId(id);
-//                recipient.setName(name);
-//                recipient.setFirstName(first_name);
-//                recipient.setLastName(last_name);
-//                recipient.setEmail(email);
-//                recipient.setAdress(adress);
-//                recipient.setTrackingid(trackingid);
-//                recipients.add(recipient);
+//                User user = new User();
+//                user.setId(id);
+//                user.setName(name);
+//                user.setFirstName(first_name);
+//                user.setLastName(last_name);
+//                user.setEmail(email);
+//                user.setAdress(adress);
+//                user.setTrackingid(trackingid);
+//                users.add(user);
 //            }
 //        }
 //        catch(Exception e){
@@ -69,7 +69,7 @@
 //                se.printStackTrace();
 //            }
 //        }
-//        return recipients;
+//        return users;
 //    }
 //
 //}

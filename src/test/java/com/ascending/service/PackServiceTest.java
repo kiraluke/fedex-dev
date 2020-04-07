@@ -1,7 +1,8 @@
-package com.ascending.repository;
+package com.ascending.service;
 
-import com.ascending.model.Pack;
 import com.ascending.ApplicationBootsTrap;
+import com.ascending.model.Pack;
+import com.ascending.repository.PackDao;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,33 +16,30 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ApplicationBootsTrap.class)
-public class PackDaoImplTest {
-        private Logger logger = LoggerFactory.getLogger(getClass());
-        @Autowired
-        private PackDao packDao;
-        private Pack p5;
-
+public class PackServiceTest {
+    private Logger logger = LoggerFactory.getLogger(getClass());
+    @Autowired
+    private PackDao packService;
+    private Pack p5;
     @Before
     public void setUp(){
-         p5 = new Pack();
-         p5.setTrackingId("2321ssdsd");
-         p5.setCategory("fedex pack");
-         p5.setDestination("Fairfax");
-         packDao.save(p5);
+        p5 = new Pack();
+        p5.setTrackingId("2321ssdsd");
+        p5.setCategory("fedex pack");
+        p5.setDestination("Fairfax");
+        packService.save(p5);
     }
     @After
     public void tearDown(){
-        packDao.delete(p5);
+        packService.delete(p5);
     }
     @Test
     public void getPacksTest() {
-        List<Pack> packs = packDao.getPacks();
+        List<Pack> packs = packService.getPacks();
         int expectedNumOfPack = 1;
-        assertEquals(expectedNumOfPack, packs.size());
+        Assert.assertEquals(expectedNumOfPack, packs.size());
     }
     @Test
     public void updateTest(){
@@ -49,12 +47,7 @@ public class PackDaoImplTest {
         p5.setTrackingId(trackId);
         p5.setCategory("fedex large box");
         p5.setDestination("Chantilly");
-        packDao.update(p5);
-        assertEquals(trackId, p5.getTrackingId());
-    }
-    @Test
-    public void getPackByTrackingTest(){
-        Pack testPack = packDao.getPackByTracking(p5.getTrackingId());
-        assertEquals(testPack.getTrackingId(),"2321ssdsd");
+        packService.update(p5);
+        Assert.assertEquals(trackId, p5.getTrackingId());
     }
 }
