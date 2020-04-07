@@ -16,7 +16,7 @@ import java.util.List;
 
 @Repository
 public class UserDaoImpl implements UserDao {
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory= HibernateUtil.getSessionFactory();
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override

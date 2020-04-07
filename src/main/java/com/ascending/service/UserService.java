@@ -36,5 +36,8 @@ public class UserService {
     public List<Pack> getUserInfoAndPacks(String userName){
         return userDao.getUserInfoAndPacksBy(userName);
     }
-    public User getUserByCredentials(String email,String password){ return userDao.getUserByCredentials(email, password);}
+
+    public User getUserByCredentials(String email,String password){
+        return userDao.getUserByCredentials(email, password);
+    }
 }

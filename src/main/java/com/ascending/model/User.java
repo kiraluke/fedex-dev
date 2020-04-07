@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     public User(){
     }
@@ -44,8 +44,8 @@ public class User {
     private List<Pack> packs;
 
     @ManyToMany(cascade = {CascadeType.ALL},fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles",
-            joinColumns = { @JoinColumn(name = "user_id")},
+    @JoinTable(name = "users_roles",
+            joinColumns = { @JoinColumn(name = "users_id")},
             inverseJoinColumns = { @JoinColumn(name = "role_id")}
     )
     private List<Role> roles;

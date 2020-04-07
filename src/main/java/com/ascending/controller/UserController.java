@@ -5,6 +5,7 @@ import com.ascending.repository.UserDao;
 import com.ascending.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,8 @@ import java.util.List;
 @RequestMapping(value = {"/user"})
 public class UserController {
     private Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Autowired
     private UserService userService;
 
     /**

@@ -20,6 +20,7 @@ public class AuthController {
     @Autowired
     private JWTService jwtService;
     Logger logger = LoggerFactory.getLogger(getClass());
+
     @RequestMapping(value = "",method= RequestMethod.POST)
     public ResponseEntity userLogin(@RequestBody User user) throws Exception {
         try {
@@ -29,7 +30,7 @@ public class AuthController {
             return ResponseEntity.ok().body(jwtService.generateToken(u));
         }catch(Exception e){
             e.printStackTrace();
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
     }
 }

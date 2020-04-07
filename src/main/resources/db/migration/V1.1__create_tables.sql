@@ -7,10 +7,10 @@ CREATE TABLE roles (
     id                   BIGSERIAL NOT NULL,
     name                 VARCHAR(50) not null unique,
     allowed_resource     VARCHAR(200),
-    allowed_read         VARCHAR(1) not null default 'N',
-    allowed_create       VARCHAR(1) not null default 'N',
-    allowed_update       VARCHAR(1) not null default 'N',
-    allowed_delete       VARCHAR(1) not null default 'N'
+    allowed_read         BOOLEAN not null default FALSE,
+    allowed_create       BOOLEAN not null default FALSE,
+    allowed_update       BOOLEAN not null default FALSE,
+    allowed_delete       BOOLEAN not null default FALSE
 );
 ALTER TABLE roles ADD CONSTRAINT role_pk PRIMARY KEY ( id );
 CREATE TABLE users_roles (
