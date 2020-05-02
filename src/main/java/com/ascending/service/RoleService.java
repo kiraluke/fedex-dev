@@ -10,7 +10,7 @@ public class RoleService {
     @Autowired
     private RoleDao roleDao;
 
-    public Role getRoleByName(String name){
-        return roleDao.getRoleByName(name);
-    }
+    public Role getRoleById(Long Id){ return roleDao.getRoleById(Id); }
+    public Role saveRole(Role role){return roleDao.save(role); }
+    public Role getRoleByUsername(String username){return roleDao.getRoleByUsername(username);}
 }

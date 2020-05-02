@@ -1,5 +1,7 @@
 package com.ascending.model;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -9,12 +11,14 @@ import java.util.Set;
 public class User {
     public User(){
     }
-    public User(Long id,String name,String firstName,String lastName,String email,String adress){
+    public User(Long id,String username,String firstName,String lastName,String email,String adress,String password){
         this.id = id;
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.address = adress;
+        this.password = password;
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -67,7 +71,8 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+//        this.password = password;
+        this.password = DigestUtils.md5Hex(password.trim());
     }
 
     public void setFirstName(String firstName) {

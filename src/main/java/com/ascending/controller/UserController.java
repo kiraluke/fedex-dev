@@ -23,8 +23,8 @@ public class UserController {
      * Get userbyName
      */
     @RequestMapping(value = "/{recpName}",method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public User getUserByName(@PathVariable(name = "recpName") String userName){
-        User user = userService.getUserByName(userName);
+    public User getUserByName(@PathVariable(name = "recpName") String username){
+        User user = userService.getUserByName(username);
         return user;
     }
 
@@ -48,16 +48,16 @@ public class UserController {
     /**
      * Post/User
      */
-    @RequestMapping(value = "",method = RequestMethod.POST,consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public User createUser(@RequestBody User user){
-        logger.debug("User: " + user.toString());
-        String msg = "The user has been created.";
-        User recp = userService.save(user);
-
-        if(recp == null)msg = "The user has not been created.";
-
-        return recp;
-    }
+//    @RequestMapping(value = "",method = RequestMethod.POST,consumes = {MediaType.APPLICATION_JSON_VALUE})
+//    public User createUser(@RequestBody User user){
+//        logger.debug("User: " + user.toString());
+//        String msg = "The user has been created.";
+//        User recp = userService.save(user);
+//
+//        if(recp == null)msg = "The user has not been created.";
+//
+//        return recp;
+//    }
 
     /**
      * Put/User
@@ -76,13 +76,24 @@ public class UserController {
      * Delete/UserByName
      */
     @RequestMapping(value = "/{recpName}",method = RequestMethod.DELETE,consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public String deleteUser(@PathVariable(name = "recpName") String userName){
-        logger.debug("User name: " + userName);
+    public String deleteUser(@PathVariable(name = "recpName") String username){
+        logger.debug("User name: " + username);
         String msg = "The user has been deleted.";
-        boolean isSuccess = userService.delete(userName);
+        boolean isSuccess = userService.delete(username);
 
         if(!isSuccess)msg = "The user has not been deleted.";
 
         return msg;
+    }
+
+    /**
+     *
+     * @param Id
+     * @return
+     */
+    @RequestMapping(value = "/{Id}",method = RequestMethod.GET,produces = {MediaType.APPLICATION_JSON_VALUE})
+    public User getUserById(@PathVariable(name = "Id") Long Id){
+        User user = userService.getUserById(Id);
+        return user;
     }
 }

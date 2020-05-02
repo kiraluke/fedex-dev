@@ -12,10 +12,7 @@ public interface UserDao {
     boolean deleteBy(String userName);
     User update(User user);
     List<Pack> getUserInfoAndPacksBy(String userName);
-
-//    List<Pack> getUsersAndPacksBy(String userName);
-
     User getUserByName(String userName);
     User getUserById(Long Id);
-    User getUserByCredentials(String email,String password);
+    User getUserByCredentials(String email,String password) throws Exception;
 }

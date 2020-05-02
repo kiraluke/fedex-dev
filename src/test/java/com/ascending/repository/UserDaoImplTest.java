@@ -41,6 +41,7 @@ public class UserDaoImplTest {
         r1.setUsername("Test");
         r1.setAddress("777 xxx Rd,falls church,va");
         r1.setEmail("1093599417@qq.com");
+        r1.setPassword("qaz1234567");
         r1 =userDao.save(r1);
 
         p1 = new Pack();
@@ -71,16 +72,15 @@ public class UserDaoImplTest {
 
     @Test
     public void getUserByNameTest(){
-//      r1.setName("Nanase");
-//      userDao.update(r1);
+      r1.setUsername("Nanase");
+      userDao.update(r1);
 //      assertEquals("Nanase",r1.getName());
-        User testUser = userDao.getUserByName(r1.getUsername());
-        assertEquals(testUser.getUsername(), "Test");
+      User testUser = userDao.getUserByName(r1.getUsername());
+        assertEquals(testUser.getUsername(), r1.getUsername());
     }
 
     @Test
     public void updateTest(){
-//        String userName = "Nishino";
         String address = "Osaka";
         String email = "nishinonnanase@gmail.com";
         r1.setUsername("Nishino");
@@ -99,5 +99,18 @@ public class UserDaoImplTest {
       assertEquals(r1.getUsername(), "Test");
 //      List<Pack> packList = result.getPacks();
 //      assertEquals(packList.size(),2);
+    }
+
+    @Test
+    public void getUserByIdTest(){
+        User testUser = userDao.getUserById(r1.getId());
+        assertEquals(testUser.getId(),r1.getId());
+    }
+
+    @Test
+    public void getUserByCredentialTest() throws Exception {
+        User testUser = userDao.getUserByCredentials(r1.getEmail(),r1.getPassword());
+        assertEquals(testUser.getEmail(),"1093599417@qq.com");
+        assertEquals(testUser.getPassword(),"qaz1234567");
     }
 }

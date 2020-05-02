@@ -37,7 +37,7 @@ public class UserService {
         return userDao.getUserInfoAndPacksBy(userName);
     }
 
-    public User getUserByCredentials(String email,String password){
+    public User getUserByCredentials(String email,String password) throws Exception {
         return userDao.getUserByCredentials(email, password);
     }
 }

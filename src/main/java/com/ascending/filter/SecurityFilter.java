@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebFilter(filterName = "securityFilter",urlPatterns = {"/*"},dispatcherTypes = {DispatcherType.REQUEST})
 public class SecurityFilter implements Filter {
@@ -22,7 +24,9 @@ public class SecurityFilter implements Filter {
     private UserService userService;
     @Autowired
     private JWTService jwtService;
-    private static String AUTH_URI ="/auth";
+    private static String LOGIN_URI ="/auth/login";
+    private static String SIGNUP_URI = "/auth/signup";
+//    private static String[] AUTH_URI = {"/auth/login","/auth/signup"};
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -46,13 +50,16 @@ public class SecurityFilter implements Filter {
         int statusCode = HttpServletResponse.SC_UNAUTHORIZED;
         String uri = req.getRequestURI();
         String verb = req.getMethod();
-        if(uri.equalsIgnoreCase(AUTH_URI))return HttpServletResponse.SC_ACCEPTED;
+        if(uri.equalsIgnoreCase(SIGNUP_URI)|| uri.equalsIgnoreCase(LOGIN_URI))return HttpServletResponse.SC_ACCEPTED;
 
         try{
         String token = req.getHeader("Authorization").replaceAll("^(.*?) ","");
         if(token ==null||token.isEmpty()) return statusCode;
 
-        Claims claims = jwtService.decodeJwtToken(token);
+        Map<String, Object> mapToken = new HashMap<>();
+        mapToken.put("token", token);
+        Claims claims = jwtService.decodeJwtToken(mapToken);
+
         if(claims.getId()!=null){
             User u = userService.getUserById(Long.valueOf(claims.getId()));
             if(u==null) return statusCode;

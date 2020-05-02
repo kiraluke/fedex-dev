@@ -41,6 +41,7 @@ public class UserServiceTest {
         r1.setUsername("Test");
         r1.setAddress("777 xxx Rd,falls church,va");
         r1.setEmail("1093599417@qq.com");
+        r1.setPassword("password");
         userService.save(r1);
 
         p1 = new Pack();
@@ -68,26 +69,40 @@ public class UserServiceTest {
     }
     @Test
     public void getUserByNameTest(){
+        r1.setUsername("Nanase");
+        userService.update(r1);
         User testUser = userService.getUserByName(r1.getUsername());
-        assertEquals(testUser.getUsername(), "Test");
+        assertEquals(testUser.getUsername(), "Nanase");
     }
     @Test
     public void updateTest(){
-//        String userName = "Nishino";
         String address = "Osaka";
         String email = "nishinonnanase@gmail.com";
         r1.setUsername("Nishino");
         r1.setAddress(address);
         r1.setEmail(email);
         userService.update(r1);
-        List<User> users = userService.getUsers();
-        int expectNumOfUser = 1;
-        assertEquals(expectNumOfUser,users.size());
+        //List<User> users = userService.getUsers();
+        //int expectNumOfUser = 1;
+        //assertEquals(expectNumOfUser,users.size());
+        assertEquals(r1.getUsername(), "Nishino");
     }
     @Test
     public void getUsersAndPacksByTest() {
         List<Pack> result = (List<Pack>) userService.getUserInfoAndPacksBy("Test");
         Assert.assertEquals(result.size(), 2);
         assertEquals(r1.getUsername(), "Test");
+    }
+    @Test
+    public void getUserByIdTest(){
+        User testUser = userService.getUserById(r1.getId());
+        assertEquals(testUser.getId(),r1.getId());
+    }
+
+    @Test
+    public void getUserByCredentialTest() throws Exception {
+        User testUser = userService.getUserByCredentials(r1.getEmail(),r1.getPassword());
+        assertEquals(testUser.getEmail(),"1093599417@qq.com");
+        assertEquals(testUser.getPassword(),"password");
     }
 }

@@ -80,25 +80,24 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<Pack> getUserInfoAndPacksBy(String userName) {
-        if(userName == null) return null;
-        String hql = "FROM User as recp left join fetch recp.packs where lower(recp.name) = :userName1";
+    public List<Pack> getUserInfoAndPacksBy(String username) {
+        if(username == null) return null;
+        String hql = "FROM User as u left join fetch u.packs where lower(u.username) = :username1";
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             Query query = session.createQuery(hql);
-            query.setParameter("userName1",userName.toLowerCase());
-
+            query.setParameter("username1", username.toLowerCase());
             List<Pack> resultList = query.list();
             return resultList;
         }
     }
 
     @Override
-    public User getUserByName(String userName) {
-        if(userName == null) return null;
-        String hql = "FROM User as recp left join fetch recp.packs where lower(recp.name) = :userName2";
+    public User getUserByName(String username) {
+        if(username == null) return null;
+        String hql = "FROM User as us where lower(us.username) = :username2";
         try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query query = session.createQuery(hql);
-            query.setParameter("userName2", userName.toLowerCase());
+            query.setParameter("username2", username.toLowerCase());
 
             return (User) query.uniqueResult();
         }
@@ -106,7 +105,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserById(Long Id) {
-        String hql = "FROM User as recp where Id = :id1";
+        String hql = "FROM User as us where Id = :id1";
         try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query query = session.createQuery(hql);
             query.setParameter("id1", Id);
@@ -116,14 +115,14 @@ public class UserDaoImpl implements UserDao {
     }
     @Override
     public boolean deleteBy(String userName) {
-        String hql = "DELETE User as recp where name = :userName3";
+        String hql = "DELETE User as us where lower(us.name) = :userName3";
         int deletedCount = 0;
         Transaction transaction = null;
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             Query<User> query = session.createQuery(hql);
-            query.setParameter("userName3", userName);
+            query.setParameter("userName3", userName.toLowerCase());
             deletedCount = query.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -134,7 +133,7 @@ public class UserDaoImpl implements UserDao {
         return deletedCount >=1 ? true : false;
     }
     @Override
-    public User getUserByCredentials(String email, String password) {
+    public User getUserByCredentials(String email, String password) throws Exception{
         String hql = "FROM User as u where lower(u.email) = :email and u.password = :password";
         logger.debug(String.format("User email: %s, password: %s", email, password));
 
@@ -144,6 +143,9 @@ public class UserDaoImpl implements UserDao {
             query.setParameter("password", password);
 
             return query.uniqueResult();
+        }
+        catch (Exception e){
+            throw new Exception("Can't find user record or session.");
         }
     }
 

@@ -15,6 +15,7 @@ public class MessegeServiceTest {
 
     @Test
     public void sendMessegeTest(){
-        messegeService.sendMessege("fdfdfdsgmn");
+        messegeService.sendMessege("ascending",1);
+
     }
 }
