@@ -2,13 +2,15 @@ package com.ascending.service;
 
 import com.ascending.model.Pack;
 import com.ascending.repository.PackDao;
-import com.ascending.repository.PackDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class PackService {
-//    @Autowired
+
+    @Autowired
     private PackDao packDao;
 
     public Pack save(Pack pack){return packDao.save(pack);}

@@ -5,19 +5,20 @@ import com.ascending.model.User;
 import com.ascending.util.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-
 import java.util.List;
 
 @Repository
 public class PackDaoImpl implements PackDao {
-    private SessionFactory sessionFactory;
+
+//    @Autowired
+//    SessionFactory sessionFactory;
+
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -32,8 +33,9 @@ public class PackDaoImpl implements PackDao {
     @Override
     public Pack save(Pack pack) {
         Transaction transaction = null;
+        //Session session = sessionFactory.openSession();
 
-        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+        try (Session session = HibernateUtil.getSessionFactory().openSession()){
             transaction = session.beginTransaction();
             session.save(pack);
             transaction.commit();
@@ -42,6 +44,7 @@ public class PackDaoImpl implements PackDao {
         catch(Exception e){
             if(transaction != null) transaction.rollback();
             logger.error(e.getMessage());
+            //return null;
         }
         return null;
     }

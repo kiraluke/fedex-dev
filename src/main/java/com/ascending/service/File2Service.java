@@ -40,7 +40,7 @@ public class File2Service {
         try {
             String uuid = UUID.randomUUID().toString();
             String originalFilename = file.getOriginalFilename();
-//            String newFileName = Files.getNameWithoutExtension(originalFilename) + uuid + File.getFileExtension(originalFilename);
+//            String newFileName = Files.getNameWithoutExtension(originalFilename) + uuid + Files.getFileExtension(originalFilename);
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(file.getContentType());
             objectMetadata.setContentLength(file.getSize());

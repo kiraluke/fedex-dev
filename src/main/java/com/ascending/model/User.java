@@ -4,7 +4,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -46,6 +45,9 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
 //    @JoinColumn
     private List<Pack> packs;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
+    private List<Image> images;
 
     @ManyToMany(cascade = {CascadeType.ALL},fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
@@ -121,5 +123,13 @@ public class User {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

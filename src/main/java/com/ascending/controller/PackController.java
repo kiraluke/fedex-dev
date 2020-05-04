@@ -4,6 +4,7 @@ import com.ascending.model.Pack;
 import com.ascending.service.PackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,8 @@ import java.util.List;
 @RequestMapping(value = {"/pack"})
 public class PackController {
     private Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Autowired
     private PackService packService;
 /**
  * Get/pack
@@ -29,11 +32,11 @@ public class PackController {
     public Pack createPack(@RequestBody Pack pack){
         logger.debug("Pack: " +pack.toString());
         String msg = "The package has been created.";
-        Pack pkg = packService.save(pack);
+        Pack newPack = packService.save(pack);
 
-        if(pkg == null) msg = "The routing has not been created.";
+        if(newPack == null) msg = "The routing has not been created.";
 
-        return pkg;
+        return newPack;
     }
     /**
      * Put/Pack
